@@ -16,8 +16,8 @@ import org.openmrs.module.Extension;
 import org.openmrs.module.web.extension.AdministrationSectionExt;
 
 /**
- * This class defines the links that will appear on the administration page under the
- * "lite.title" heading. This extension is enabled by defining (uncommenting) it in the config.xml file.
+ * This class defines the links that will appear on the administration page under the "lite.title"
+ * heading. This extension is enabled by defining (uncommenting) it in the config.xml file.
  */
 public class AdminList extends AdministrationSectionExt {
 	
@@ -44,7 +44,7 @@ public class AdminList extends AdministrationSectionExt {
 		
 		map.put("module/lite/lite.form", "lite.title");
 		map.put("lite/lite.page", "lite.refapp.title");
-
+		
 		return map;
 	}
 	

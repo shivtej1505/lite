@@ -11,4 +11,11 @@
 	<packaging>jar</packaging>
 	<name>Lite API</name>
 	<description>API project for Lite</description>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>dataintegrity-api</artifactId>
+		</dependency>
+	</dependencies>
 </project>
