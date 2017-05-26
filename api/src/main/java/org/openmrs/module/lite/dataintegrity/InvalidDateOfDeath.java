@@ -16,22 +16,15 @@ import java.util.List;
 
 public class InvalidDateOfDeath implements RuleDefinition<Patient> {
 	
-	private SessionFactory sessionFactory = null;
-	
 	@Override
 	public List<RuleResult<Patient>> evaluate() {
-		if (sessionFactory == null)
-			sessionFactory = Context.getRegisteredComponent("sessionFactory", SessionFactory.class);
-		Session session = sessionFactory.openSession();
-		Criteria criteria = session.createCriteria(Patient.class, "patient");
-		
+		Criteria criteria = getSession().createCriteria(Patient.class, "patient");
+
 		criteria.add(Restrictions.isNotNull("deathDate"));
 		criteria.add(Restrictions.eq("voided", false));
 		criteria.add(Restrictions.gt("deathDate", new Date()));
 		
 		List<Patient> patientList = criteria.list();
-		//List<Patient> patientList = new ArrayList<>();
-		
 		return patientToRuleResultTransformer(patientList);
 	}
 	
@@ -44,7 +37,6 @@ public class InvalidDateOfDeath implements RuleDefinition<Patient> {
             ruleResult.setEntity(patient);
             ruleResults.add(ruleResult);
         }
-
         return ruleResults;
     }
 	
@@ -58,7 +50,7 @@ public class InvalidDateOfDeath implements RuleDefinition<Patient> {
 		return rule;
 	}
 	
-	public void setSessionFactory(SessionFactory sessionFactory) {
-		this.sessionFactory = sessionFactory;
+	private Session getSession() {
+		return Context.getRegisteredComponent("sessionFactory", SessionFactory.class).getCurrentSession();
 	}
 }
