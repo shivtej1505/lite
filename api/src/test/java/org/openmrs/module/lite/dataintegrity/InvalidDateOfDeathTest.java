@@ -19,15 +19,15 @@ public class InvalidDateOfDeathTest extends BaseModuleContextSensitiveTest {
 	
 	@Mock
 	InvalidDateOfDeath invalidDateOfDeath;
-
+	
 	Logger logger = Logger.getLogger("logger");
-
+	
 	@Before
 	public void initialize() throws Exception {
 		executeDataSet(STANDARD_DATASET_XML);
 		invalidDateOfDeath = new InvalidDateOfDeath();
 	}
-
+	
 	@Test
 	public void EvaluateTestNonEmptyPatientList() {
 		List<Patient> patients = Context.getPatientService().getAllPatients();
