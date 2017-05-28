@@ -15,19 +15,17 @@ import java.util.Date;
 import java.util.List;
 
 public class InvalidDateOfDeath implements RuleDefinition<Patient> {
-	
 	@Override
 	public List<RuleResult<Patient>> evaluate() {
 		Criteria criteria = getSession().createCriteria(Patient.class, "patient");
-
 		criteria.add(Restrictions.isNotNull("deathDate"));
 		criteria.add(Restrictions.eq("voided", false));
 		criteria.add(Restrictions.gt("deathDate", new Date()));
-		
+
 		List<Patient> patientList = criteria.list();
 		return patientToRuleResultTransformer(patientList);
 	}
-	
+
 	private List<RuleResult<Patient>> patientToRuleResultTransformer(List<Patient> patients) {
         List<RuleResult<Patient>> ruleResults = new ArrayList<>();
         for (Patient patient : patients) {
@@ -39,7 +37,7 @@ public class InvalidDateOfDeath implements RuleDefinition<Patient> {
         }
         return ruleResults;
     }
-	
+
 	public DataIntegrityRule getRule() {
 		DataIntegrityRule rule = new DataIntegrityRule();
 		rule.setRuleCategory("patient");
@@ -49,7 +47,7 @@ public class InvalidDateOfDeath implements RuleDefinition<Patient> {
 		rule.setUuid("e0e6cb8d-8492-4bed-bf3f-08a3ecf3bedb");
 		return rule;
 	}
-	
+
 	private Session getSession() {
 		return Context.getRegisteredComponent("sessionFactory", SessionFactory.class).getCurrentSession();
 	}
