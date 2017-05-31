@@ -14,7 +14,7 @@ import org.openmrs.api.UserService;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.lite.Item;
 import org.openmrs.module.lite.api.LiteService;
-import org.openmrs.module.lite.api.dao.LiteDao;
+import org.openmrs.module.lite.api.db.hibernate.LiteDao;
 
 public class LiteServiceImpl extends BaseOpenmrsService implements LiteService {
 	

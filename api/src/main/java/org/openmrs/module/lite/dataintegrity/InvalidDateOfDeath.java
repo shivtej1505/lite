@@ -30,17 +30,17 @@ public class InvalidDateOfDeath implements RuleDefinition<Patient> {
 	}
 	
 	private List<RuleResult<Patient>> patientToRuleResultTransformer(List<Patient> patients) {
-		System.out.println("------------------");
+		//System.out.println("------------------");
         List<RuleResult<Patient>> ruleResults = new ArrayList<>();
         for (Patient patient : patients) {
-        	System.out.println(patient.getPerson().getFamilyName());
+        	//System.out.println(patient.getPerson().getFamilyName());
             RuleResult<Patient> ruleResult = new RuleResult<>();
             ruleResult.setActionUrl("");
             ruleResult.setNotes("Patient with invalid date");
             ruleResult.setEntity(patient);
             ruleResults.add(ruleResult);
         }
-		System.out.println("------------------");
+		//System.out.println("------------------");
 		return ruleResults;
     }
 	
