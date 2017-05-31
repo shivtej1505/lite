@@ -7,21 +7,10 @@
  * Copyright (C) OpenMRS Inc. OpenMRS is a registered trademark and the OpenMRS
  * graphic logo is a trademark of OpenMRS Inc.
  */
-package org.openmrs.module.lite.api.impl;
+package org.openmrs.module.lite.api.db;
 
-import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.lite.api.LiteService;
-import org.openmrs.module.lite.api.db.LiteDao;
 
-public class LiteServiceImpl extends BaseOpenmrsService implements LiteService {
+public interface LiteDao {
 	
-	private LiteDao dao;
-	
-	public void setDao(LiteDao dao) {
-		this.dao = dao;
-	}
-	
-	public LiteDao getDao() {
-		return dao;
-	}
 }

@@ -20,7 +20,7 @@
 
     <!-- Wraps LiteService methods in DB transactions and OpenMRS interceptors,
     which set audit info like dateCreated, changedBy, etc.-->
-    <bean id="LiteService"
+    <bean id="liteService"
             class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
         <property name="transactionManager">
             <ref bean="transactionManager" />
@@ -28,7 +28,7 @@
         <property name="target">
             <bean class="${project.parent.groupId}.${project.parent.artifactId}.api.impl.LiteServiceImpl">
                 <property name="dao">
-                    <bean class="${project.parent.groupId}.${project.parent.artifactId}.api.db.hibernate.LiteDao">
+                    <bean class="${project.parent.groupId}.${project.parent.artifactId}.api.db.hibernate.HibernateLiteDAO">
                         <property name="sessionFactory">
                             <ref bean="sessionFactory" />
                         </property>
@@ -50,7 +50,7 @@
         <property name="moduleService">
             <list>
                 <value>${project.parent.groupId}.${project.parent.artifactId}.api.LiteService</value>
-                <ref bean="LiteService" />
+                <ref bean="liteService" />
             </list>
         </property>
     </bean>
