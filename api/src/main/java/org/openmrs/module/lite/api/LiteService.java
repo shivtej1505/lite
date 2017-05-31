@@ -9,17 +9,10 @@
  */
 package org.openmrs.module.lite.api;
 
-import org.openmrs.annotation.Authorized;
-import org.openmrs.api.APIException;
 import org.openmrs.api.OpenmrsService;
-import org.openmrs.module.lite.LiteConfig;
-import org.openmrs.module.lite.Item;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- * The main service of this module, which is exposed for other modules. See
- * moduleApplicationContext.xml on how it is wired up.
- */
+@Transactional
 public interface LiteService extends OpenmrsService {
 	
 }

@@ -11,6 +11,7 @@ import org.openmrs.module.dataintegrity.rule.RuleDefinition;
 import org.openmrs.module.dataintegrity.rule.RuleResult;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,26 +22,26 @@ public class InvalidDateOfDeath implements RuleDefinition<Patient> {
 	@Override
 	public List<RuleResult<Patient>> evaluate() {
 		Criteria criteria = getSession().createCriteria(Patient.class, "patient");
-		criteria.add(Restrictions.isNotNull("deathDate"));
-		criteria.add(Restrictions.eq("voided", false));
-		criteria.add(Restrictions.gt("deathDate", new Date()));
+		//criteria.add(Restrictions.isNotNull("deathDate"));
+		//criteria.add(Restrictions.eq("voided", false));
+		//criteria.add(Restrictions.gt("deathDate", new Date()));
 		
 		List<Patient> patientList = criteria.list();
 		return patientToRuleResultTransformer(patientList);
 	}
 	
 	private List<RuleResult<Patient>> patientToRuleResultTransformer(List<Patient> patients) {
-		//System.out.println("------------------");
+		System.out.println("------------------");
         List<RuleResult<Patient>> ruleResults = new ArrayList<>();
         for (Patient patient : patients) {
-        	//System.out.println(patient.getPerson().getFamilyName());
+        	System.out.println(patient.getPerson().getFamilyName());
             RuleResult<Patient> ruleResult = new RuleResult<>();
             ruleResult.setActionUrl("");
             ruleResult.setNotes("Patient with invalid date");
             ruleResult.setEntity(patient);
             ruleResults.add(ruleResult);
         }
-		//System.out.println("------------------");
+		System.out.println("------------------");
 		return ruleResults;
     }
 	
@@ -55,6 +56,21 @@ public class InvalidDateOfDeath implements RuleDefinition<Patient> {
 	}
 	
 	private Session getSession() {
-		return Context.getRegisteredComponent("sessionFactory", SessionFactory.class).getCurrentSession();
+		try {
+			return Context.getRegisteredComponent("sessionFactory", SessionFactory.class).getCurrentSession();
+		}
+		catch (NoSuchMethodError ex) {
+			System.out.println("NoSuchMethodError: " + ex.getMessage());
+			try {
+				SessionFactory sessionFactory = Context.getRegisteredComponent("sessionFactory", SessionFactory.class);
+				Method method = sessionFactory.getClass().getMethod("getCurrentSession", null);
+				return (org.hibernate.Session) method.invoke(sessionFactory, null);
+			}
+			catch (Exception e) {
+				System.out.println("Failed to get the hibernate session: " + e.getMessage());
+				e.printStackTrace();
+			}
+		}
+		return null;
 	}
 }

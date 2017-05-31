@@ -11,6 +11,8 @@ package org.openmrs.module.lite;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.api.AdministrationService;
+import org.openmrs.api.context.Context;
 import org.openmrs.module.BaseModuleActivator;
 
 /**
@@ -24,7 +26,19 @@ public class LiteActivator extends BaseModuleActivator {
 	 * @see #started()
 	 */
 	public void started() {
+		removeOldChangeLocksForDataIntegrityModule();
 		log.info("Started Lite");
+	}
+	
+	private void removeOldChangeLocksForDataIntegrityModule() {
+		String gpVal = Context.getAdministrationService().getGlobalProperty("dataintegrity.database_version");
+		// remove data integrity locks for an version below 4
+		// some gymnastics to get the major version number from semver like 2.5.3
+		if ((gpVal == null) || new Integer(gpVal.substring(0, gpVal.indexOf("."))).intValue() < 4) {
+			AdministrationService as = Context.getAdministrationService();
+			log.warn("Removing liquibase change log locks for previously installed data integrity instance");
+			as.executeSQL("delete from liquibasechangelog WHERE ID like 'dataintegrity%';", false);
+		}
 	}
 	
 	/**
